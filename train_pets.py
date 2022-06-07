@@ -105,7 +105,7 @@ def get_dataloader(dataset_path, batch_size, image_size=224, num_workers=0, **kw
     return loader
 
 
-def get_model(n_out, arch="resnet18", pretrained=True):
+def get_model(n_out, arch="resnet18", pretrained=False):
     model = getattr(tv.models, arch)(pretrained=pretrained, num_classes=n_out)
     return model
 
