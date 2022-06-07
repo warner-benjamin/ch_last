@@ -132,9 +132,9 @@ def train(config=config_defaults):
         n_steps_per_epoch = math.ceil(len(train_dl.dataset) / config.batch_size)
 
         model = get_model(len(train_dl.dataset.vocab), config.model_name)
-        model.to(config.device)
         if config.channels_last:
             model.to(memory_format=torch.channels_last)
+        model.to(config.device)
 
         # Make the loss and optimizer
         loss_func = nn.CrossEntropyLoss()
