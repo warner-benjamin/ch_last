@@ -25,7 +25,7 @@ ENTITY = "capecape"
 GROUP = "PETS"
 
 config_defaults = SimpleNamespace(
-    batch_size=64,
+    batch_size=128,
     device="cuda",
     epochs=2,
     num_experiments=1,
