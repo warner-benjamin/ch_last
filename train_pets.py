@@ -34,7 +34,7 @@ config_defaults = SimpleNamespace(
     model_name="resnet50",
     dataset="PETS",
     num_workers=4,
-    mixed_precision=False,
+    mixed_precision=True,
     channels_last=False,
     optimizer="Adam",
 )
@@ -51,7 +51,7 @@ def parse_args():
     parser.add_argument('--dataset', type=str, default=config_defaults.dataset)
     parser.add_argument('--device', type=str, default=config_defaults.device)
     parser.add_argument('--num_workers', type=int, default=config_defaults.num_workers)
-    parser.add_argument('--mixed_precision', action="store_true")
+    parser.add_argument('--mixed_precision', type=bool, default=True)
     parser.add_argument('--channels_last', action="store_true")
     parser.add_argument('--optimizer', type=str, default=config_defaults.optimizer)
     return parser.parse_args()
