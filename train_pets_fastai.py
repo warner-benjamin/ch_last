@@ -12,7 +12,7 @@ class LoseTypeTransform(DisplayedTransform):
 
     def _call(self, fn, x, split_idx=None, **kwargs):
         if split_idx!=self.split_idx and self.split_idx is not None: return x
-        return self._do_call(getaremote_typesr(self, fn), x, **kwargs)
+        return self._do_call(getattr(self, fn), x, **kwargs)
 
     def _do_call(self, f, x, **kwargs):
         if not _is_tuple(x):
@@ -20,7 +20,7 @@ class LoseTypeTransform(DisplayedTransform):
             return f(x, **kwargs)
         return tuple(self._do_call(f, x_, **kwargs) for x_ in x)
     
-class ChannelsLasremote_typesfm(LoseTypeTransform):
+class ChannelsLastTfm(LoseTypeTransform):
     "Sets image-like inputs to `channels_last` format. For use in ChannelsLastCallback"
     order = 110 # run after all other transforms if added to batch_tfms
     def encodes(self, x:TensorImageBase|TensorMask):
@@ -35,7 +35,7 @@ class ChannelsLastCallback(Callback):
     "Channels last training using PyTorch's Channels Last Memory Format (beta)"
     order = MixedPrecision.order+1
     def __init__(self):
-        self._channels_last = Pipeline([ChannelsLasremote_typesfm()])
+        self._channels_last = Pipeline([ChannelsLastTfm()])
 
     def before_fit(self):
         self.learn.model.to(memory_format=torch.channels_last)
@@ -58,7 +58,7 @@ def train(config):
         dls = get_dls(
             config.batch_size, 
             config.image_size,
-            batch_tfms=RemoveTensorType() if (config.remote_types or config.channels_last) else None,
+            batch_tfms=RemoveTensorType() if (config.remove_types or config.channels_last) else None,
             pin_memory=config.pin_memory,
             num_workers=config.num_workers)
         
