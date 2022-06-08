@@ -73,9 +73,10 @@ class Pets(torch.utils.data.Dataset):
     vocab_map = {v:i for i,v in enumerate(vocab)}
 
 
-    def __init__(self, pets_path, image_size=224):
+    def __init__(self, pets_path, image_size=224, val_pct=0.2):
         self.path = Path(pets_path)
-        self.files = list(self.path.glob("images/*.jpg"))
+        files = list(self.path.glob("images/*.jpg"))
+        self.files = files[0:int((1-val_pct)*len(files))]
         self.tfms =T.Compose([T.Resize((image_size, image_size)), T.ToTensor()])
         self.vocab_map = {v:i for i, v in enumerate(self.vocab)}
     
