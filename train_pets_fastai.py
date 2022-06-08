@@ -81,7 +81,6 @@ config_defaults = SimpleNamespace(
     batch_size=128,
     device="cuda",
     epochs=2,
-    num_experiments=1,
     learning_rate=1e-3,
     image_size=224,
     model_name="resnet50",
@@ -102,17 +101,16 @@ def parse_args():
     parser.add_argument('--image_size', type=int, default=config_defaults.image_size)
     parser.add_argument('--model_name', type=str, default=config_defaults.model_name)
     parser.add_argument('--dataset', type=str, default=config_defaults.dataset)
-    parser.add_argument('--device', type=str, default=config_defaults.device)
     parser.add_argument('--num_workers', type=int, default=config_defaults.num_workers)
-    parser.add_argument('--mixed_precision', action="store_false")
+    parser.add_argument('--mixed_precision', action="store_true")
     parser.add_argument('--channels_last', action="store_true")
     parser.add_argument('--pin_memory', action="store_true")
     parser.add_argument('--remove_types', action="store_true")
-    parser.add_argument('--optimizer', type=str, default=config_defaults.optimizer)
 
     return parser.parse_args()
 
 
 if __name__ == "__main__":
     args = parse_args()
-    train(config=args)
+    for _ in range(args.num_experiments):
+        train(config=args)
