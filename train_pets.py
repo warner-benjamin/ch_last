@@ -143,6 +143,7 @@ def train(config=config_defaults):
        # Training
         example_ct = 0
         step_ct = 0
+        total_time = perf_counter()
         for epoch in tqdm(range(config.epochs)):
             t0 = perf_counter()
             model.train()
@@ -175,7 +176,7 @@ def train(config=config_defaults):
                     wandb.log(metrics)
 
                 step_ct += 1
-            
+        wandb.summary["total_time"] = perf_counter() - total_time   
                 
 if __name__ == "__main__":
     args = parse_args()
