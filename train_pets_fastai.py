@@ -67,9 +67,6 @@ def train(config):
         cbs = [WandbCallback(log_preds=False)]
         cbs += [ChannelsLastCallback()] if config.channels_last else []
         t0 = time.perf_counter()
-        # learn = vision_learner(dls, resnet50, 
-        #                        metrics=error_rate, cbs=cbs, 
-        #                        pretrained=False).to_fp16()
         learn = Learner(dls, resnet50(num_classes=len(dls.vocab)), metrics=error_rate, cbs=cbs).to_fp16()
         wandb.summary["total_time"] = time.perf_counter() - t0
         learn.fit(config.epochs)

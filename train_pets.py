@@ -153,10 +153,9 @@ def train(config=config_defaults):
             model.train()
             for step, (images, labels) in enumerate(tqdm(train_dl, leave=False)):
                 images, labels = images.to(config.device), labels.to(config.device)
+                ti = perf_counter()
                 if config.channels_last:
                     images = images.contiguous(memory_format=torch.channels_last)
-
-                ti = perf_counter()
                 if config.mixed_precision:
                     with autocast():
                         outputs = model(images)
