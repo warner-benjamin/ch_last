@@ -43,7 +43,7 @@ class ChannelsLastCallback(Callback):
     def before_batch(self):
         self.learn.xb = self._channels_last(self.xb)
 
-def get_dls(bs, image_size, batch_tfms=None, pin_memory):
+def get_dls(bs, image_size, batch_tfms=None, pin_memory=False):
     dataset_path = untar_data(URLs.PETS)
     files = get_image_files(dataset_path/"images")
     dls = ImageDataLoaders.from_name_re(
