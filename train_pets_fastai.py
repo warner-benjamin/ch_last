@@ -69,8 +69,7 @@ def train(config):
         t0 = time.perf_counter()
         learn = vision_learner(dls, resnet50, 
                                metrics=error_rate, cbs=cbs, 
-                               pretrained=False)
-        learn.to_fp16() if config.mixed_precision else learn
+                               pretrained=False).to_fp16()
         wandb.summary["total_time"] = time.perf_counter() - t0
         learn.fit(config.epochs)
     return
