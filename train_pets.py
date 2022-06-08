@@ -113,7 +113,6 @@ def get_model(n_out, arch="resnet18", pretrained=False):
 def check_cuda(config):
     if torch.cuda.is_available():
         config.device = "cuda"
-        config.mixed_precision = True
         config.gpu_name = torch.cuda.get_device_name()
     return config
 
