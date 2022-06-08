@@ -63,12 +63,12 @@ def train(config):
             num_workers=config.num_workers)
         
         cbs = [WandbCallback(log_preds=False)]
-        cbs += [MixedPrecision()] if config.mixed_precision else []
         cbs += [ChannelsLastCallback()] if config.channels_last else []
         t0 = time.perf_counter()
         learn = vision_learner(dls, resnet50, 
                                metrics=error_rate, cbs=cbs, 
-                               pretrained=False).to_fp16()
+                               pretrained=False)
+        learn.to_fp16() if config.mixed_precision else learn
         wandb.summary["total_time"] = time.perf_counter() - t0
         learn.fit(config.epochs)
     return
@@ -87,7 +87,7 @@ config_defaults = SimpleNamespace(
     model_name="resnet50",
     dataset="PETS",
     num_workers=4,
-    mixed_precision=False,
+    mixed_precision=True,
     channels_last=False,
     optimizer="Adam",
 )
