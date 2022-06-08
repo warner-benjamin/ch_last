@@ -53,6 +53,8 @@ def get_dls(bs, image_size, batch_tfms=None, pin_memory=False, num_workers=4):
     return dls
 
 def train(config):
+    if config.channels_last:
+        config.remove_types = True
     with wandb.init(project='channels_last', group="fastai", config=config):
         config = wandb.config
         dls = get_dls(
@@ -103,7 +105,7 @@ def parse_args():
     parser.add_argument('--model_name', type=str, default=config_defaults.model_name)
     parser.add_argument('--dataset', type=str, default=config_defaults.dataset)
     parser.add_argument('--num_workers', type=int, default=config_defaults.num_workers)
-    parser.add_argument('--mixed_precision', action="store_true")
+    parser.add_argument('--mixed_precision', type=bool, default=True)
     parser.add_argument('--channels_last', action="store_true")
     parser.add_argument('--pin_memory', action="store_true")
     parser.add_argument('--remove_types', action="store_true")
