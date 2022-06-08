@@ -22,7 +22,7 @@ from torch.cuda.amp import autocast
 
 PROJECT = "channels_last"
 ENTITY = "capecape"
-GROUP = "PETS"
+GROUP = "pytorch"
 
 config_defaults = SimpleNamespace(
     batch_size=128,
