@@ -43,12 +43,13 @@ class ChannelsLastCallback(Callback):
     def before_batch(self):
         self.learn.xb = self._channels_last(self.xb)
 
-def get_dls(bs, image_size, batch_tfms=None, pin_memory=False):
+def get_dls(bs, image_size, batch_tfms=None, pin_memory=False, num_workers=4):
     dataset_path = untar_data(URLs.PETS)
     files = get_image_files(dataset_path/"images")
     dls = ImageDataLoaders.from_name_re(
             dataset_path, files, r'(^[a-zA-Z]+_*[a-zA-Z]+)', valid_pct=0.2,
-            seed=1234, bs=bs, item_tfms=Resize(image_size), batch_tfms=batch_tfms, pin_memory=pin_memory)
+            seed=1234, bs=bs, item_tfms=Resize(image_size), batch_tfms=batch_tfms, 
+            pin_memory=pin_memory, num_workers=num_workers)
     return dls
 
 def train(config):
@@ -58,7 +59,8 @@ def train(config):
             config.batch_size, 
             config.image_size,
             batch_tfms=RemoveTensorType() if (config.remote_types or config.channels_last) else None,
-            pin_memory=config.pin_memory)
+            pin_memory=config.pin_memory,
+            num_workers=config.num_workers)
         
         cbs = [WandbCallback(log_preds=False)]
         cbs += [MixedPrecision()] if config.mixed_precision else []
