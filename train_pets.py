@@ -77,7 +77,10 @@ class Pets(torch.utils.data.Dataset):
         self.path = Path(pets_path)
         files = list(self.path.glob("images/*.jpg"))
         self.files = files[0:int((1-val_pct)*len(files))]
-        self.tfms =T.Compose([T.Resize((image_size, image_size)), T.ToTensor()])
+        self.tfms =T.Compose([
+            T.Resize((image_size, image_size)), 
+            T.ToTensor(),
+            T.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])])
         self.vocab_map = {v:i for i, v in enumerate(self.vocab)}
     
     @staticmethod
