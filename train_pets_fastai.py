@@ -44,9 +44,11 @@ class ChannelsLastCallback(Callback):
         self.learn.xb = self._channels_last(self.xb)
 
 def get_dls(bs, batch_tfms=None):
-    dls = ImageDataLoaders.from_name_func(
-        path, get_image_files(path), valid_pct=0.2,
-        label_func=lambda x: x[0].isupper(), item_tfms=Resize(224), bs=bs, batch_tfms=batch_tfms)
+    dataset_path = untar_data(URLs.PETS)
+    files = get_image_files(dataset_path/"images")
+    dls = ImageDataLoaders.from_name_re(
+            dataset_path, files, r'(^[a-zA-Z]+_*[a-zA-Z]+)', valid_pct=0.2,
+            seed=1234, bs=bs, item_tfms=Resize(224), batch_tfms=batch_tfms)
     return dls
 
 def train(loss_func, opt_func=Adam, channels_last=False, batch_size=128, epochs=2, tt=False):
