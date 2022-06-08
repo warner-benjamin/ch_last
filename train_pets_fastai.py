@@ -81,6 +81,7 @@ config_defaults = SimpleNamespace(
     batch_size=128,
     device="cuda",
     epochs=2,
+    num_experiments=1,
     learning_rate=1e-3,
     image_size=224,
     model_name="resnet50",
