@@ -63,7 +63,7 @@ def get_pets():
     dataset_path = at.download()
     return dataset_path
 
-class SubClassedTensor(Tensor): 
+class SubClassedTensor(torch.Tensor): 
     pass
 
 class Pets(torch.utils.data.Dataset):
