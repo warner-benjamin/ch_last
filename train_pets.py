@@ -54,7 +54,7 @@ def parse_args():
     parser.add_argument('--mixed_precision', type=bool, default=True)
     parser.add_argument('--channels_last', action="store_true")
     parser.add_argument('--optimizer', type=str, default=config_defaults.optimizer)
-    parser.add_argument('--subclass', type=bool, default=False)
+    parser.add_argument('--subclass', action="store_true")
     return parser.parse_args()
 
 def get_pets():
@@ -174,7 +174,7 @@ def train(config=config_defaults):
                 optimizer.zero_grad()
                 tf = perf_counter()
                 example_ct += len(images)
-                metrics = {"train/train_loss": train_loss, 
+                metrics = {"train/train_loss": train_loss.item(), 
                            "train/epoch": (step + 1 + (n_steps_per_epoch * epoch)) / n_steps_per_epoch, 
                            "train/example_ct": example_ct,
                            "train_samples_per_sec":len(images)/(tf-ti),
