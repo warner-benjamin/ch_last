@@ -54,6 +54,7 @@ def parse_args():
     parser.add_argument('--mixed_precision', type=bool, default=True)
     parser.add_argument('--channels_last', action="store_true")
     parser.add_argument('--optimizer', type=str, default=config_defaults.optimizer)
+    parser.add_argument('--subclass', type=bool, default=False)
     return parser.parse_args()
 
 def get_pets():
@@ -61,6 +62,9 @@ def get_pets():
     at = api.artifact('capecape/pytorch-M1Pro/PETS:v1', type='dataset')
     dataset_path = at.download()
     return dataset_path
+
+class SubClassedTensor(Tensor): 
+    pass
 
 class Pets(torch.utils.data.Dataset):
     pat = r'(^[a-zA-Z]+_*[a-zA-Z]+)'
@@ -152,6 +156,8 @@ def train(config=config_defaults):
             t0 = perf_counter()
             model.train()
             for step, (images, labels) in enumerate(tqdm(train_dl, leave=False)):
+                if config.subclass:
+                    images = images.as_subclass(SubClassedTensor)
                 images, labels = images.to(config.device), labels.to(config.device)
                 ti = perf_counter()
                 if config.channels_last:
