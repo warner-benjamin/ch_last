@@ -163,6 +163,7 @@ def train(config=config_defaults):
         model.to(memory_format=torch.channels_last)
     model.to(config.device)
     if config.pt_compile:
+        torch.set_float32_matmul_precision('high')
         model = torch.compile(model)
 
     if config.mixed_precision:
