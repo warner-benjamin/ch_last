@@ -1,7 +1,7 @@
-python train.py --channels_last False --subclass False
+python train.py
 sleep 10
-python train.py --channels_last True --subclass False
+python train.py --channels_last=True
 sleep 10
-python train.py --channels_last False --subclass True
+python train.py --subclass=True
 sleep 10
-python train.py --channels_last True --subclass True
+python train.py --channels_last=True --subclass=True
